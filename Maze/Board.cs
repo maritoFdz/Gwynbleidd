@@ -1,6 +1,6 @@
-﻿namespace Gwynbleidd.Board;
+﻿using Spectre.Console;
 
-using Gwynbleidd.Maze.Squares;
+namespace Gwynbleidd.Maze;
 public class Board
 {
     public BoardSquare[,] Cells { get; private set; }
@@ -13,11 +13,17 @@ public class Board
 
     public void PrintBoard()
     {
-        for (int i = 0; i < Cells.GetLength(0); i++)
+        var grid = new Grid();
+        for (int i = 0; i < Cells.GetLength(1); i++)
+            grid.AddColumn();
+
+        for (int row = 0; row < Cells.GetLength(0); row++)
         {
-            for (int j = 0; j < Cells.GetLength(0); j++)
-                Console.Write(Cells[i, j].IsOccupied ? "*" : "+");
-            Console.WriteLine();
+            var rowContent = new List<string>(Cells.GetLength(1));
+            for (int col = 0; col < Cells.GetLength(1); col++)
+                rowContent.Add(Cells[row, col].IsOccupied ? "+" : "*");
+            grid.AddRow(rowContent.ToArray());
         }
+        AnsiConsole.Write(grid);
     }
 }

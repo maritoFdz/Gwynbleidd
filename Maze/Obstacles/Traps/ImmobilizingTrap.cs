@@ -1,4 +1,6 @@
-﻿namespace Gwynbleidd.Maze.Squares.Obstacles.Traps;
+﻿using Gwynbleidd.Maze.Obstacles;
+
+namespace Gwynbleidd.Maze.Obstacles.Traps;
 
 public class ImmobilizingTrap : Trap
 {

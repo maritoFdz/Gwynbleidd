@@ -1,4 +1,4 @@
-﻿namespace Gwynbleidd.Maze.Squares.Obstacles;
+﻿namespace Gwynbleidd.Maze.Obstacles;
 public abstract class Trap : BoardSquare
 {
     private const bool isObstacle = true;

@@ -1,9 +1,9 @@
-﻿namespace Gwynbleidd.Maze.Squares;
+﻿namespace Gwynbleidd.Maze;
 public class BoardSquare
 {
-    public bool IsOccupied { get; protected set; }
-    public bool IsFrozen { get; protected set; }
-    public bool IsObstacle { get; protected set; }
+    public bool IsOccupied { get; set; }
+    public bool IsFrozen { get; set; }
+    public bool IsObstacle { get; set; }
 
     public BoardSquare(bool isOccupied = false, bool isFrozen = false, bool isObstacle = false)
     {

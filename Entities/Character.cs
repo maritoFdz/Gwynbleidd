@@ -1,23 +1,19 @@
 ﻿namespace Gwynbleidd.Entities;
 
-public abstract class Character
+public abstract class Character(
+    string name,
+    string description,
+    int velocity,
+    int skillCooldown)
 {
-    public readonly String Name;
-    public readonly String Description;
-    public readonly int Velocity;
-    public readonly int SkillCooldown;
+    public readonly string Name = name;
+    public readonly string Description = description;
+    public readonly int Velocity = velocity;
+    public readonly int SkillCooldown = skillCooldown;
     public (int X, int Y) Position { get; protected set; }
     public int VelocityModifier { get; protected set; }
     public bool CantMove { get; protected set; }
     public bool HasCiri { get; protected set; }
-
-    public Character(String name, String description, int velocity, int skillCooldown)
-    {
-        Name = name;
-        Description = description;
-        this.Velocity = velocity;
-        this.SkillCooldown = skillCooldown;
-    }
 
     public void Move(int direction)
     {
