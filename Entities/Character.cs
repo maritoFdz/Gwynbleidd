@@ -2,16 +2,21 @@
 
 public abstract class Character
 {
+    public readonly String Name;
+    public readonly String Description;
     public readonly int Velocity;
     public readonly int SkillCooldown;
+    public (int X, int Y) Position { get; protected set; }
     public int VelocityModifier { get; protected set; }
     public bool CantMove { get; protected set; }
     public bool HasCiri { get; protected set; }
 
-    public Character(int velocity, int SkillCooldown)
+    public Character(String name, String description, int velocity, int skillCooldown)
     {
+        Name = name;
+        Description = description;
         this.Velocity = velocity;
-        this.SkillCooldown = SkillCooldown;
+        this.SkillCooldown = skillCooldown;
     }
 
     public void Move(int direction)
