@@ -1,5 +1,6 @@
 ﻿namespace Gwynbleidd;
 
+using Gwynbleidd.GameProcess;
 using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.GameProcess.Menus;
 using Gwynbleidd.Maze;
@@ -14,8 +15,7 @@ public class GwynbleiddGame
         MainMenu.Display();
         if (MainMenu.GetUserSelection())
         {
-            AnsiConsole.Clear();
-            AnsiConsole.Write(new Markup("[red]Congratulations Witcher![/]"));
+            MazeMaster.StartGame();
         }
         else
         {

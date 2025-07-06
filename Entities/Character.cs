@@ -10,7 +10,7 @@ public abstract class Character(
     public readonly string Description = description;
     public readonly int Velocity = velocity;
     public readonly int SkillCooldown = skillCooldown;
-    public (int X, int Y) Position { get; protected set; }
+    public (int X, int Y) Position { get; set; }
     public int VelocityModifier { get; protected set; }
     public bool CantMove { get; protected set; }
     public bool HasCiri { get; protected set; }

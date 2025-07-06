@@ -1,15 +1,20 @@
 ﻿using Spectre.Console;
+using System.Runtime.CompilerServices;
 
 namespace Gwynbleidd.Maze;
 public class Board
 {
     public BoardSquare[,] Cells { get; private set; }
+
     public Board(int dimension)
     {
         if (dimension < 1)
             throw new ArgumentException("Width and height must be at least 1.");
         Cells = new BoardSquare[dimension, dimension];
     }
+
+    public BoardSquare this[int x, int y]
+    { get => Cells[x, y]; }
 
     public void PrintBoard()
     {

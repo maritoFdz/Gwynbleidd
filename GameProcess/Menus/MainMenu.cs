@@ -33,7 +33,10 @@ public static class MainMenu
                     continue;
                 int option = int.Parse(input);
                 if (option == 1 || option == 2)
+                {
+                    AnsiConsole.Clear(); // Cleans the tittle
                     return (option == 1);
+                }
             }
             catch (FormatException) { continue; }
         }
