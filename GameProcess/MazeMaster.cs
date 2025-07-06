@@ -44,11 +44,24 @@ public static class MazeMaster
         }
 
         // Second player turn
+        foreach (var character in p2.Party)
+        {
+            // Manages the player movement for each character
+            if (character.CanMove)
+                PerformActions(character);
+            // Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
+            ActualizeMaze();
+            //TODO
+            // Shows current board state
+            Maze!.PrintBoard();
+        }
     }
     
     public static void PerformActions(Character character)
     {
-
+        // It should show a menu with the current player and some image, for now just the name
+        AnsiConsole.Write("Press 1 to move. Press 2 to use your skill");
+        character.Move(Maze!); // sends maze to Move so that the character can be able to decide if a position is valid or not
     }
 
     public static void ActualizeMaze()
