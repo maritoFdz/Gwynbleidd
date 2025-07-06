@@ -44,7 +44,13 @@ public class GwynbleiddGame
 
             Player p1 = new(p1Name, p1Team);
             Player p2 = new(p2Name, p2Team);
-            MazeMaster.StartGame(p1, p2);
+
+            try { 
+                MazeMaster.RunMaze(p1, p2);
+            } catch (MazeGenerationException)
+            {
+                AnsiConsole.Write("Error while generating Maze. Please close the game and run it again.");
+            }
         }
         else
         {
