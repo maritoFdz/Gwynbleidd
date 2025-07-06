@@ -1,4 +1,5 @@
 ﻿using Gwynbleidd.Maze;
+using Spectre.Console;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
 
@@ -8,13 +9,9 @@ public static class MovementHelper
     public static readonly Dictionary<string, (int X, int Y)> Direction = new()
     {
         ["N"] = (0, -1),  // Up
-        ["NE"] = (1, -1),  // Diagonal Up-Right
         ["E"] = (1, 0),  // Right
-        ["SE"] = (1, 1),  // Diagonal Down-Right
         ["S"] = (0, 1),  // Down
-        ["SW"] = (-1, 1),  // Diagonal Down-Left
         ["W"] = (-1, 0),  // Left
-        ["NW"] = (-1, -1)   // Diagonal Up-Right
     };
 
     public static int[,] GetDistances((int row, int col)Position, int velocity,Board maze)
@@ -47,10 +44,13 @@ public static class MovementHelper
                 int neighborX = cX + X;
                 int neighborY = cY + Y;
 
-                // If the square hasn't been visited, there is no other character on top, there are no obstacles and it is inside the Maze bounds
-                if (!visited[neighborX, neighborY] && !maze[neighborX, neighborY].IsObstacle && InMazeBounds(neighborX, neighborY, mazeDim))
+                // If the square is inside the Maze bounds,   
+                if (InMazeBounds(neighborX, neighborY, mazeDim) 
+                    && !visited[neighborX, neighborY] // hasn't been visited,
+                    && !maze[neighborX, neighborY].IsObstacle // there are no obstacles on it,
+                    && !maze[neighborX, neighborY].IsOccupied) // and there is no other character on top,
                 {
-                    distances[neighborX, neighborY] = distances[cX, cY] + 1; // then actualize the distance
+                    distances[neighborX, neighborY] = distances[cX, cY] + 1; // actualize the distance
                     visited[neighborX, neighborY] = true;
                     queue.Enqueue((neighborX, neighborY));
                 }
@@ -59,6 +59,33 @@ public static class MovementHelper
         return distances;
     }
 
-    private static bool InMazeBounds(int x, int y, int mazeDim)
+    public static bool InMazeBounds(int x, int y, int mazeDim)
         => x >= 0 && x < mazeDim && y >= 0 && y < mazeDim;
+
+    public static (int x, int y) GetDirection(ConsoleKeyInfo input)
+    {
+        string? direction = null;
+        (int dirX, int dirY) = (0, 0);
+        // Sends a direction to ChangePosition() method if the key is valid for movement
+        switch (input.Key)
+        {
+            case ConsoleKey.UpArrow:
+                direction = "N";
+                break;
+            case ConsoleKey.RightArrow:
+                direction = "E";
+                break;
+            case ConsoleKey.LeftArrow:
+                direction = "W";
+                break;
+            case ConsoleKey.DownArrow:
+                direction = "S";
+                break;
+        }
+        if (!string.IsNullOrEmpty(direction))
+            (dirX, dirY) = Direction[direction];
+
+        // If the player selected a direction via keyboard
+        return (dirX, dirY);
+    }
 }

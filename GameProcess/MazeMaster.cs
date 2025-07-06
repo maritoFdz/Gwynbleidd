@@ -61,7 +61,10 @@ public static class MazeMaster
     {
         // It should show a menu with the current player and some image, for now just the name
         AnsiConsole.Write("Press 1 to move. Press 2 to use your skill");
-        character.Move(Maze!); // sends maze to Move so that the character can be able to decide if a position is valid or not
+        while(!character.Move(Maze!)) // sends maze to Move so that the character can be able to decide if a position is valid or not
+        {
+            Maze!.PrintBoard();
+        }
     }
 
     public static void ActualizeMaze()

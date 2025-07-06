@@ -1,5 +1,6 @@
 ﻿using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.Maze;
+using Spectre.Console;
 
 namespace Gwynbleidd.Entities;
 
@@ -20,43 +21,39 @@ public abstract class Character(
 
     public bool Move(Board maze) // returns true if there was movement an false if it wasn't
     {
+        // TODO (somehow make that maze doesn't have to go to the player class)
         int[,] distances = MovementHelper.GetDistances(Position, Velocity + VelocityModifier, maze);
         (int x, int y) originalPos = Position;
         ConsoleKeyInfo input;
         do
         {
             input = Console.ReadKey(true);
-            string? direction = null;
-            // Sends a direction to ChangePosition() method if the key is valid for movement
-            switch (input.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    direction = "N";
-                    break;
-                case ConsoleKey.RightArrow:
-                    direction = "E";
-                    break;
-                case ConsoleKey.LeftArrow:
-                    direction = "W";
-                    break;
-                case ConsoleKey.DownArrow:
-                    direction = "S";
-                    break;
-            }
-            // If the player selected a direction via keyboard
-            if (!string.IsNullOrEmpty(direction)) 
-                ChangePosition(MovementHelper.Direction[direction], distances);
+            (int dirX, int dirY) direction = MovementHelper.GetDirection(input);
+            ChangePosition(direction, distances, maze);
 
+            // For testing only
+            AnsiConsole.Clear();
+            maze.PrintBoard();
         } while (input.Key != ConsoleKey.Enter); // Stop moving when pressing enter
 
+        AnsiConsole.Clear();
+
+        // Checks if there was actual movement
         if (originalPos == Position)
-            return false; // there was no movement
+            return false;
         else
             return true;
     }
 
-    public void ChangePosition((int x, int y) direction, int[,] distances)
+    public void ChangePosition((int x, int y) direction, int[,] distances,Board maze)
     {
+        (int nextX, int nextY) = (Position.X + direction.y, Position.Y + direction.x);
+        if (MovementHelper.InMazeBounds(nextX, nextY, maze.GetLength()) && distances[nextX, nextY] != -1)
+        {
+            maze[Position.X, Position.Y].IsOccupied = false;
+            Position = (nextX, nextY);
+            maze[Position.X, Position.Y].IsOccupied = true;
+        }
     }
 
     public abstract void UseSkill();
