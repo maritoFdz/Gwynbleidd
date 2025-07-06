@@ -11,35 +11,8 @@ namespace Gwynbleidd.GameProcess;
 public static class MazeMaster
 {
     private static Board? Maze;
-    public static void StartGame()
+    public static void StartGame(Player p1, Player p2)
     {
-        // Creates players
-        string? p1Name;
-        do
-        {
-            AnsiConsole.Write("Type Player 1 name: ");
-            p1Name = Console.ReadLine();
-            AnsiConsole.Clear();
-        } while (string.IsNullOrWhiteSpace(p1Name));
-
-        string? p2Name;
-        do
-        {
-            AnsiConsole.Write("Type Player 2 name: ");
-            p2Name = Console.ReadLine();
-            AnsiConsole.Clear();
-        } while (string.IsNullOrWhiteSpace(p2Name));
-
-
-        CSelectionMenu.Display(); // TODO Implement two menus, one for the Wild Hunt and the other for the Witchers, with diff decoration
-        
-        // For now, we will simplfy this by creating a 1vs1 match
-        var p1Team = new[] { new Geralt() };
-        var p2Team = new[] { new Eredin() };
-
-        Player p1 = new(p1Name, p1Team);
-        Player p2 = new(p2Name, p2Team);
-
         Maze = MazeGenerator.GenerateMaze(p1, p2);
     }
 }
