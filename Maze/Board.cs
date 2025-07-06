@@ -16,6 +16,8 @@ public class Board
     public BoardSquare this[int x, int y]
     { get => Cells[x, y]; }
 
+    public int GetLength() => Cells.GetLength(0);
+
     public void PrintBoard()
     {
         var grid = new Grid();

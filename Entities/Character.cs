@@ -20,28 +20,33 @@ public abstract class Character(
 
     public bool Move(Board maze) // returns true if there was movement an false if it wasn't
     {
+        int[,] distances = MovementHelper.GetDistances(Position, Velocity + VelocityModifier, maze);
         (int x, int y) originalPos = Position;
         ConsoleKeyInfo input;
         do
         {
             input = Console.ReadKey(true);
-            
+            string? direction = null;
             // Sends a direction to ChangePosition() method if the key is valid for movement
             switch (input.Key)
             {
                 case ConsoleKey.UpArrow:
-                    ChangePosition(MovementHelper.Direction["N"], maze);
+                    direction = "N";
                     break;
                 case ConsoleKey.RightArrow:
-                    ChangePosition(MovementHelper.Direction["E"], maze);
+                    direction = "E";
                     break;
                 case ConsoleKey.LeftArrow:
-                    ChangePosition(MovementHelper.Direction["W"], maze);
+                    direction = "W";
                     break;
                 case ConsoleKey.DownArrow:
-                    ChangePosition(MovementHelper.Direction["S"], maze);
+                    direction = "S";
                     break;
             }
+            // If the player selected a direction via keyboard
+            if (!string.IsNullOrEmpty(direction)) 
+                ChangePosition(MovementHelper.Direction[direction], distances);
+
         } while (input.Key != ConsoleKey.Enter); // Stop moving when pressing enter
 
         if (originalPos == Position)
@@ -50,10 +55,8 @@ public abstract class Character(
             return true;
     }
 
-    public void ChangePosition((int x, int y) direction, Board maze)
+    public void ChangePosition((int x, int y) direction, int[,] distances)
     {
-        if (MovementHelper.IsReachablePosition(direction, maze))
-            Console.WriteLine("Reachable");
     }
 
     public abstract void UseSkill();
