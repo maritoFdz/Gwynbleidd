@@ -1,0 +1,17 @@
+﻿namespace Gwynbleidd.Entities.WildHunters;
+
+public class Eredin : Character
+{
+    private const string name = "Eredin";
+    private const string description = "A high ranking general in his world until he killed the king and became his successor.";
+    private const int velocity = 2;
+    private const int skillCooldown = 3;
+
+    public Eredin() : base(name, description, velocity, skillCooldown) { }
+
+    public override void UseSkill()
+    {
+        // TODO WHEN BOARD IS IMPLEMENTED
+        // Use skill logic for Eredin
+    }
+}
