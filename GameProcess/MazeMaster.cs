@@ -11,6 +11,7 @@ namespace Gwynbleidd.GameProcess;
 public static class MazeMaster
 {
     private static Board? Maze;
+
     public static Player RunMaze(Player p1, Player p2)
     {
         Maze = MazeGenerator.GenerateMaze(p1, p2)
