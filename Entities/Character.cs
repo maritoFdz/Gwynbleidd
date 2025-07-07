@@ -1,6 +1,7 @@
 ﻿using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.Maze;
 using Spectre.Console;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Gwynbleidd.Entities;
 
@@ -14,9 +15,10 @@ public abstract class Character(
     public readonly string Description = description;
     public readonly int Velocity = velocity;
     public readonly int SkillCooldown = skillCooldown;
-    public (int X, int Y) Position { get; set; }
+    public (int X, int Y) Position { get; protected set; }
     public int VelocityModifier { get; protected set; }
-    public bool CanMove { get; private set; } = true;
+    public int CooldownModifier { get; protected set; }
+    public bool CanMove { get; protected set; } = true;
     public bool HasCiri { get; protected set; }
 
     public bool Move(Board maze) // returns true if there was movement an false if it wasn't
@@ -55,6 +57,11 @@ public abstract class Character(
             maze[Position.X, Position.Y].IsOccupied = true;
         }
     }
+
+    public void ModifyVelocity(int modifier)
+        => VelocityModifier = modifier;
+    public void ModifyCooldown(int modifier)
+    => CooldownModifier = modifier;
 
     public abstract void UseSkill();
 }
