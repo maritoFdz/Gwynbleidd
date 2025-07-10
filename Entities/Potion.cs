@@ -2,6 +2,10 @@
 
 namespace Gwynbleidd.Entities;
 
+
+// TODO Potions to implement in some moment 
+// White honey to end with all modifiers targeting the player
+// Wolve Hour to move the player randomly but give him instant cooldown
 public class Potion(string name, int amountOfTurns, int vMod, int cMod) : IModifier
 {
     public string Name { get; protected set; } = name;

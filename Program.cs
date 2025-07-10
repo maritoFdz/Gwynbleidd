@@ -54,7 +54,7 @@ public class GwynbleiddGame
         }
         else
         {
-            // TODO show thanks for playing and clean the las console line
+            // TODO show thanks for playing and clean the last console line
         }
     }
 }
