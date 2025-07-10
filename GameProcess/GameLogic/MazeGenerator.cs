@@ -34,7 +34,7 @@ public static class MazeGenerator
             int x = rand.Next(0, 9);
             int y = rand.Next(0, 9);
             maze[x, y].IsOccupied = true;
-            character.Position = (x, y);
+            character.PlaceInMap((x, y));
         }
 
         foreach (var character in p2.Party)
@@ -42,7 +42,7 @@ public static class MazeGenerator
             int x = rand.Next(0, 9);
             int y = rand.Next(0, 9);
             maze[x, y].IsOccupied = true;
-            character.Position = (x, y);
+            character.PlaceInMap((x, y));
         }
     }
 }

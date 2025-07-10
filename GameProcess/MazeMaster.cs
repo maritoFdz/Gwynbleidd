@@ -5,6 +5,7 @@ using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.GameProcess.Menus;
 using Gwynbleidd.Maze;
 using Spectre.Console;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Gwynbleidd.GameProcess;
 
@@ -16,6 +17,7 @@ public static class MazeMaster
     {
         Maze = MazeGenerator.GenerateMaze(p1, p2)
             ?? throw new MazeGenerationException("Could not create a Maze. Please try again.");
+        MovementHelper.AddMazeToHelper(Maze);
 
         // Selects the starter player randomly
         Player firstP = new Random().Next(2) == 0 ? p1 : p2;
@@ -29,6 +31,12 @@ public static class MazeMaster
         return firstP.IsWinner ? firstP : secP;
     }
 
+    public static void DisplayMaze()
+    {
+        AnsiConsole.Clear();
+        Maze!.PrintBoard();
+    }
+
     private static void GameLoop(Player p1, Player p2)
     {
         // First player turn
@@ -37,11 +45,8 @@ public static class MazeMaster
             // Manages the player movement for each character
             if (character.CanMove)
                 PerformActions(character);
-            // Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
-            ActualizeMaze();
-            //TODO
-            // Shows current board state
-            Maze!.PrintBoard();
+
+            // TODO Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
         }
 
         // Second player turn
@@ -50,11 +55,8 @@ public static class MazeMaster
             // Manages the player movement for each character
             if (character.CanMove)
                 PerformActions(character);
-            // Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
-            ActualizeMaze();
-            //TODO
-            // Shows current board state
-            Maze!.PrintBoard();
+
+            // TODO Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
         }
     }
     
@@ -62,16 +64,12 @@ public static class MazeMaster
     {
         // It should show a menu with the current player and some image, for now just the name
         AnsiConsole.Write("Press 1 to move. Press 2 to use your skill");
-        while(!character.Move(Maze!)) // sends maze to Move so that the character can be able to decide if a position is valid or not
+        while(character.Move()) // sends maze to Move so that the character can be able to decide if a position is valid or not
         {
             Maze!.PrintBoard();
         }
     }
 
-    public static void ActualizeMaze()
-    {
-
-    }
 }
 
 public class MazeGenerationException(string message) : Exception(message);

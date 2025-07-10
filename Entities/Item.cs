@@ -29,6 +29,8 @@ public class Item(string name, int amountOfTurns, int vMod, int cMod) : IModifie
 
     public void Remove() // Maybe instead of creating new items, a fixed amount could exist and items could change (????)
     {
+        Target!.ModifyCooldown(0);
+        Target!.ModifyVelocity(0);
         Target = null;
     }
 
