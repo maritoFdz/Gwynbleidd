@@ -1,5 +1,7 @@
 ﻿using Gwynbleidd.Entities;
 using Gwynbleidd.Maze;
+using System;
+using System.Text;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
 public static class MazeGenerator
@@ -16,22 +18,15 @@ public static class MazeGenerator
 
     public static void PlaceCharacters(Player p1, Player p2, Board maze)
     {
-        Random rand = new();
 
         foreach (var character in p1.Party)
         {
-            int x = rand.Next(maze.GetLength());
-            int y = rand.Next(maze.GetLength());
-            maze[x, y].CharacterOnTop = character;
-            character.PlaceInMap((x, y));
+            PlaceRandom(character, maze);
         }
 
         foreach (var character in p2.Party)
         {
-            int x = rand.Next(maze.GetLength());
-            int y = rand.Next(maze.GetLength());
-            maze[x, y].CharacterOnTop = character;
-            character.PlaceInMap((x, y));
+            PlaceRandom(character, maze);
         }
     }
 
@@ -39,18 +34,27 @@ public static class MazeGenerator
     public static void PlaceItems(Board maze)
     {
         const int amount = 8;
-        Random rand = new();
-        var potions = new List<Potion>();
 
         for (int i = 0; i < amount; i++)
-            potions.Add(PotionGenerator.Generate());
-
-        foreach (var potion in potions)
         {
-            int x = rand.Next(maze.GetLength());
-            int y = rand.Next(maze.GetLength());
-            maze[x, y].PotionOnTop = potion;
-            potion.PlaceInMap((x, y));
+            var potion = PotionGenerator.Generate();
+            PlaceRandom(potion, maze);
+        }
+    }
+
+    public static void PlaceRandom(IEntity entity, Board maze)
+    {
+        int x = Random.Shared.Next(maze.GetLength());
+        int y = Random.Shared.Next(maze.GetLength());
+
+        if (entity is IPlayable playable)
+        {
+            playable.PlaceInMap((x, y));
+            maze[x, y].SetCharacter(playable);
+        }
+        else
+        {
+            maze[x, y].SetContent(entity);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Gwynbleidd.Maze.Obstacles;
+﻿namespace Gwynbleidd.Maze.Traps;
 public abstract class Trap : BoardSquare
 {
     public Trap() : base() { }

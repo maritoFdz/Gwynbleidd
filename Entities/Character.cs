@@ -1,53 +1,34 @@
 ﻿using Gwynbleidd.GameProcess;
 using Gwynbleidd.GameProcess.GameLogic;
-using Gwynbleidd.Maze;
 using Spectre.Console;
-using System.Reflection.Metadata.Ecma335;
+using System.Globalization;
 
 namespace Gwynbleidd.Entities;
 
 public abstract class Character(
     string name,
     string description,
+    char appareance,
     int velocity,
-    int skillCooldown)
+    int skillCooldown) : IPlayable
 {
-    public readonly string Name = name;
-    public readonly string Description = description;
-    public readonly int Velocity = velocity;
-    public readonly int SkillCooldown = skillCooldown;
+    public string Name { get; protected set; } = name;
+    public string Description { get; protected set; } = description;
+    public int Velocity { get; protected set; } = velocity;
+    public int Cooldown { get; protected set; } = skillCooldown;
+    public char Appareance { get; protected set; } = appareance;
     public (int X, int Y) Position { get; protected set; }
     public int VelocityModifier { get; protected set; }
     public int CooldownModifier { get; protected set; }
     public bool CanMove { get; protected set; } = true;
-    public bool HasCiri { get; protected set; }
 
-    public bool Move() // returns true if there was movement an false if it wasn't
-    {
-        (int x, int y) originalPos = Position;
-        MovementHelper.ActualizeDistances(Position, Velocity + VelocityModifier);
-        ConsoleKeyInfo input;
-        do
-        {
-            input = Console.ReadKey(true);
-            (int dirX, int dirY) direction = MovementHelper.GetDirection(input);
-            MovementHelper.ChangePosition(this, direction);
+    public abstract bool Move();
 
-            // For testing only
-            MazeMaster.DisplayMaze(); // This also needs to be improved, there is no reason for the character to do something with MazeMaster
-        } while (input.Key != ConsoleKey.Enter && !MovementHelper.GrabbedItem()); // Stop moving when pressing enter or getting an item
-        AnsiConsole.Clear();
-        // Checks if there was actual movement
-        return (originalPos == Position);
-    }
+    public abstract void UseSkill();
 
-    public void ModifyVelocity(int modifier)
-        => VelocityModifier = modifier;
-    public void ModifyCooldown(int modifier)
-        => CooldownModifier = modifier;
+    public void ModifyStats(int vMod, int cMod) // for convention, a 0 - 0 modifier implies a stats reset
+   => (VelocityModifier, CooldownModifier) = (vMod == 0 & cMod == 0) ? (0, 0) : (VelocityModifier + vMod, CooldownModifier + cMod);
 
     public void PlaceInMap((int x, int y) destination)
         => Position = destination;
-
-    public abstract void UseSkill();
 }

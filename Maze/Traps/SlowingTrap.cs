@@ -1,6 +1,4 @@
-﻿using Gwynbleidd.Maze.Obstacles;
-
-namespace Gwynbleidd.Maze.Obstacles.Traps;
+﻿namespace Gwynbleidd.Maze.Traps;
 public class SlowingTrap : Trap
 {
     public override void TriggerTrap()

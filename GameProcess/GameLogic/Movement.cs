@@ -98,25 +98,31 @@ public static class MovementHelper
         (int nextX, int nextY) = (character.Position.X + direction.x, character.Position.Y + direction.y);
         if (InMazeBounds(nextX, nextY) && CurrentCharacterDistances![nextX, nextY] != -1)
         {
-            Maze![character.Position.X, character.Position.Y].CharacterOnTop = null;
+            Maze![character.Position.X, character.Position.Y].SetCharacter(null);
             character.PlaceInMap((nextX, nextY));
-            Maze![nextX, nextY].CharacterOnTop = character;
+            Maze![nextX, nextY].SetCharacter(character);
         }
     }
 
-    public static bool GrabbedItem()
+    public static bool GrabbedPotion()
     {
         foreach (BoardSquare square in Maze!.Cells)
-            if (square.CharacterOnTop != null && square.PotionOnTop != null) // if an square is shared by a character and a potion
+        {
+            // Check if square has both a chracter (those are the ones that are afected by modifiers) and a potion
+            if (square.CharacterOnTop is Character character && square.Content is Potion potion)
             {
-                // Potion's target will be the player on top, then added to the Active Modifiers lists and erased from the Maze 
-                square.PotionOnTop.SetTarget(square.CharacterOnTop);
-                ModifiersManagment.Add(square.PotionOnTop);
-                square.PotionOnTop = null;
+                // Apply potion to character
+                potion.SetTarget(character);
+                ModifiersManagment.Add(potion);
+                // Erases potion from board
+                square.SetContent(null);
+
                 return true;
             }
+        }
         return false;
     }
+
 
     public static bool InMazeBounds(int x, int y)
     => x >= 0 && x < Maze!.GetLength() && y >= 0 && y < Maze.GetLength();
