@@ -11,6 +11,19 @@ public class Board
         if (dimension < 1)
             throw new ArgumentException("Width and height must be at least 1.");
         Cells = new BoardSquare[dimension, dimension];
+        for (int i = 0; i < Cells.GetLength(0); i++)
+        {
+            for (int j = 0; j < Cells.GetLength(0); j++)
+            {
+                Cells[i, j] = new BoardSquare
+                {
+                    CharacterOnTop = null,
+                    IsFrozen = false,
+                    IsObstacle = false,
+                    PotionOnTop = null
+                };
+            }
+        }
     }
 
     public BoardSquare this[int x, int y]
@@ -28,7 +41,7 @@ public class Board
         {
             var rowContent = new List<string>(Cells.GetLength(1));
             for (int col = 0; col < Cells.GetLength(1); col++)
-                rowContent.Add(Cells[row, col].IsOccupied ? "+" : Cells[row, col].IsObstacle ? "x" : ".");
+                rowContent.Add(Cells[row, col].CharacterOnTop != null ? "+" : Cells[row, col].PotionOnTop != null ? "P" : ".");
             grid.AddRow(rowContent.ToArray());
         }
         AnsiConsole.Write(grid);

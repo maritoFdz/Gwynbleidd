@@ -4,11 +4,8 @@ using Gwynbleidd.Entities;
 using Gwynbleidd.Entities.WildHunters;
 using Gwynbleidd.Entities.Witchers;
 using Gwynbleidd.GameProcess;
-using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.GameProcess.Menus;
-using Gwynbleidd.Maze;
 using Spectre.Console;
-using System.Xml.Schema;
 
 public class GwynbleiddGame
 {
@@ -54,7 +51,7 @@ public class GwynbleiddGame
         }
         else
         {
-            // TODO show thanks for playing and clean the las console line
+            // TODO show thanks for playing and clean the last console line
         }
     }
 }

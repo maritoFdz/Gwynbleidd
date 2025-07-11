@@ -35,7 +35,7 @@ public abstract class Character(
 
             // For testing only
             MazeMaster.DisplayMaze(); // This also needs to be improved, there is no reason for the character to do something with MazeMaster
-        } while (input.Key != ConsoleKey.Enter); // Stop moving when pressing enter
+        } while (input.Key != ConsoleKey.Enter && !MovementHelper.GrabbedItem()); // Stop moving when pressing enter or getting an item
         AnsiConsole.Clear();
         // Checks if there was actual movement
         return (originalPos == Position);
@@ -44,12 +44,10 @@ public abstract class Character(
     public void ModifyVelocity(int modifier)
         => VelocityModifier = modifier;
     public void ModifyCooldown(int modifier)
-    => CooldownModifier = modifier;
+        => CooldownModifier = modifier;
 
     public void PlaceInMap((int x, int y) destination)
-    {
-        Position = destination;
-    }
+        => Position = destination;
 
     public abstract void UseSkill();
 }

@@ -1,11 +1,8 @@
 ﻿using Gwynbleidd.Entities;
-using Gwynbleidd.Entities.WildHunters;
-using Gwynbleidd.Entities.Witchers;
 using Gwynbleidd.GameProcess.GameLogic;
-using Gwynbleidd.GameProcess.Menus;
 using Gwynbleidd.Maze;
 using Spectre.Console;
-using static System.Net.Mime.MediaTypeNames;
+using System.Data;
 
 namespace Gwynbleidd.GameProcess;
 
@@ -39,6 +36,8 @@ public static class MazeMaster
 
     private static void GameLoop(Player p1, Player p2)
     {
+        ModifiersManagment.Apply(); // modifies velocity and cooldown time for all characters
+
         // First player turn
         foreach (var character in p1.Party)
         {
@@ -58,6 +57,23 @@ public static class MazeMaster
 
             // TODO Actualices map to change squares atributtes (handling trap penalties, cooldown tracking, and turn-based effects)
         }
+
+        ModifiersManagment.OnTurnEnd();
+
+        // testing
+        if (ModifiersManagment.ActiveModifiers.Count > 0)
+        {
+            var modifierNames = ModifiersManagment.ActiveModifiers
+                .Select(potion => potion.Name)
+                .ToList();
+
+            AnsiConsole.MarkupLine(string.Join(", ", modifierNames));
+        }
+        else
+        {
+            AnsiConsole.MarkupLine("[grey]No active modifiers[/]");
+        }
+        Console.ReadLine();
     }
     
     public static void PerformActions(Character character)

@@ -1,8 +1,15 @@
-﻿namespace Gwynbleidd.Maze;
+﻿using Gwynbleidd.Entities;
+
+namespace Gwynbleidd.Maze;
+
+// TODO this class should be improved a lot
 public class BoardSquare
 {
-    public bool IsOccupied { get; set; }
-    public bool IsFrozen { get; set; }
+    public Character? CharacterOnTop { get; set; }
+    public Potion? PotionOnTop { get; set; }
+    public bool IsFrozen { get; set; } // TODO
     public bool IsObstacle { get; set; }
-    public bool HasItem { get; set; }
+
+    public void RemovePotion()
+        => PotionOnTop = null;
 }
