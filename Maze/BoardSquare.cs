@@ -5,8 +5,11 @@ namespace Gwynbleidd.Maze;
 // TODO this class should be improved a lot
 public class BoardSquare
 {
-    public Character? CharacterOnTop { get; set; } // this could be a CharacteronTop atribute or smth like that, it would be eassier to trigger modifiers
+    public Character? CharacterOnTop { get; set; }
+    public Potion? PotionOnTop { get; set; }
     public bool IsFrozen { get; set; } // TODO
     public bool IsObstacle { get; set; }
-    public Potion? PotionOnTop { get; set; }
+
+    public void RemovePotion()
+        => PotionOnTop = null;
 }

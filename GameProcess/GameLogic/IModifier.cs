@@ -1,6 +1,7 @@
 ﻿using Gwynbleidd.Entities;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
+
 public interface IModifier
 {
     String Name { get; }
@@ -10,6 +11,4 @@ public interface IModifier
     int CooldownModifier {  get; }
 
     void Apply();
-    void OnTurnEnd();
-    void Remove();
 }

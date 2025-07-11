@@ -19,26 +19,9 @@ public class Potion(string name, int amountOfTurns, int vMod, int cMod) : IModif
     public void PlaceInMap((int x, int y) destination)
         => Position = destination;
 
-    public void OnTurnEnd()
-    {
-        // If no players have trigger it or it expired
-        if (RemainingTurns == 0 && Target != null)
-            Remove();
-        else
-            RemainingTurns--;
-    }
-
     public void Apply() // Change character atributes
     {
         Target!.ModifyCooldown(CooldownModifier);
         Target!.ModifyVelocity(VelocityModifier);
     }
-
-    public void Remove() // Maybe instead of creating new items, a fixed amount could exist and items could change (????)
-    {
-        Target!.ModifyCooldown(0);
-        Target!.ModifyVelocity(0);
-        Target = null;
-    }
-
 }

@@ -1,11 +1,7 @@
 ﻿using Gwynbleidd.Entities;
-using Gwynbleidd.Entities.WildHunters;
-using Gwynbleidd.Entities.Witchers;
 using Gwynbleidd.GameProcess.GameLogic;
-using Gwynbleidd.GameProcess.Menus;
 using Gwynbleidd.Maze;
 using Spectre.Console;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Gwynbleidd.GameProcess;
 
