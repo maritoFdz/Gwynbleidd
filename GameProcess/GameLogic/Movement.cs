@@ -56,7 +56,7 @@ public static class MovementHelper
                 if (InMazeBounds(neighborX, neighborY) 
                     && !visited[neighborX, neighborY] // hasn't been visited,
                     && !Maze[neighborX, neighborY].IsObstacle // there are no obstacles on it,
-                    && !Maze[neighborX, neighborY].IsOccupied) // and there is no other character on top,
+                    && Maze[neighborX, neighborY].CharacterOnTop == null) // and there is no other character on top,
                 {
                     CurrentCharacterDistances[neighborX, neighborY] = CurrentCharacterDistances[cX, cY] + 1; // actualize the distance
                     visited[neighborX, neighborY] = true;
@@ -71,9 +71,9 @@ public static class MovementHelper
         (int nextX, int nextY) = (character.Position.X + direction.x, character.Position.Y + direction.y);
         if (InMazeBounds(nextX, nextY) && CurrentCharacterDistances![nextX, nextY] != -1)
         {
-            Maze![character.Position.X, character.Position.Y].IsOccupied = false;
+            Maze![character.Position.X, character.Position.Y].CharacterOnTop = null;
             character.PlaceInMap((nextX, nextY));
-            Maze![nextX, nextY].IsOccupied = true;
+            Maze![nextX, nextY].CharacterOnTop = character;
         }
     }
 

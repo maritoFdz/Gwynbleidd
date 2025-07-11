@@ -1,6 +1,5 @@
 ﻿using Gwynbleidd.Entities;
 using Gwynbleidd.Maze;
-using Spectre.Console;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
 public static class MazeGenerator
@@ -10,19 +9,6 @@ public static class MazeGenerator
     public static Board GenerateMaze(Player p1, Player p2)
     {
         Board maze = new(MazeDimension);
-        for (int i = 0; i < MazeDimension; i++)
-        {
-            for (int j = 0; j < MazeDimension; j++)
-            {
-                maze.Cells[i, j] = new BoardSquare
-                {
-                    IsFrozen = false,
-                    IsOccupied = false,
-                    IsObstacle = false,
-                    HasPotion = false
-                };
-            }
-        }
         PlaceCharacters(p1, p2, maze);
         PlaceItems(maze);
         return maze;
@@ -36,7 +22,7 @@ public static class MazeGenerator
         {
             int x = rand.Next(maze.GetLength());
             int y = rand.Next(maze.GetLength());
-            maze[x, y].IsOccupied = true;
+            maze[x, y].CharacterOnTop = character;
             character.PlaceInMap((x, y));
         }
 
@@ -44,7 +30,7 @@ public static class MazeGenerator
         {
             int x = rand.Next(maze.GetLength());
             int y = rand.Next(maze.GetLength());
-            maze[x, y].IsOccupied = true;
+            maze[x, y].CharacterOnTop = character;
             character.PlaceInMap((x, y));
         }
     }
@@ -63,7 +49,7 @@ public static class MazeGenerator
         {
             int x = rand.Next(maze.GetLength());
             int y = rand.Next(maze.GetLength());
-            maze[x, y].HasPotion = true;
+            maze[x, y].PotionOnTop = potion;
             potion.PlaceInMap((x, y));
         }
     }
