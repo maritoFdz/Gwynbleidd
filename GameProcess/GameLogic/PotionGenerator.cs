@@ -1,17 +1,21 @@
-﻿using Spectre.Console;
-using System.IO;
+﻿using Gwynbleidd.Entities;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
 
 public static class PotionGenerator
 {
     public readonly static List<(string name, int duration, int vMod, int cMod)> Potions;
-    public static void Generate()
-    {
 
+    // Returns a random potion from the list of potions
+    public static Potion Generate()
+    {
+        var random = new Random();
+        (string name, int duration, int vMod, int cMod) = Potions[random.Next(Potions.Count)];
+        return new Potion(name, duration, vMod, cMod);
     }
 
-    static PotionGenerator() // reads the database
+    // Loads the database
+    static PotionGenerator()
     {
 
         // Gets the database path for correct reading
@@ -48,7 +52,7 @@ public static class PotionGenerator
                     throw new FormatException("Database error");
                 }
 
-                Potions.Add((fields[0].Trim(), duration, vMod, cMod));
+                Potions.Add((fields[0], duration, vMod, cMod));
             }
         }
         catch (Exception)

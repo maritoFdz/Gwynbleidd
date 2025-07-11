@@ -16,6 +16,8 @@ public class Potion(string name, int amountOfTurns, int vMod, int cMod) : IModif
     public (int X, int Y) Position { get; private set; }
     public string? Appareance { get; private set; }
 
+    public void PlaceInMap((int x, int y) destination)
+        => Position = destination;
 
     public void OnTurnEnd()
     {

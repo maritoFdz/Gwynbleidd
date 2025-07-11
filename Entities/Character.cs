@@ -44,12 +44,10 @@ public abstract class Character(
     public void ModifyVelocity(int modifier)
         => VelocityModifier = modifier;
     public void ModifyCooldown(int modifier)
-    => CooldownModifier = modifier;
+        => CooldownModifier = modifier;
 
     public void PlaceInMap((int x, int y) destination)
-    {
-        Position = destination;
-    }
+        => Position = destination;
 
     public abstract void UseSkill();
 }

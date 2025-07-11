@@ -28,7 +28,7 @@ public class Board
         {
             var rowContent = new List<string>(Cells.GetLength(1));
             for (int col = 0; col < Cells.GetLength(1); col++)
-                rowContent.Add(Cells[row, col].IsOccupied ? "+" : Cells[row, col].IsObstacle ? "x" : ".");
+                rowContent.Add(Cells[row, col].IsOccupied ? "+" : Cells[row, col].HasPotion ? "P" : ".");
             grid.AddRow(rowContent.ToArray());
         }
         AnsiConsole.Write(grid);
