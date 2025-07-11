@@ -9,23 +9,24 @@ public static class ModifiersManagment
     public static void Add(IModifier modifier)
         => ActiveModifiers.Add(modifier);
 
-    public static void Actualize()
+    public static void OnTurnEnd()
     {
-        foreach (var modifier in ActiveModifiers)
+        for (int i = ActiveModifiers.Count - 1; i >= 0; i--)
         {
+            var modifier = ActiveModifiers[i];
+            modifier.Target!.ModifyVelocity(0); // Resets character stats
+            modifier.Target.ModifyCooldown(0);
+
             if (modifier.RemainingTurns == 0)
-                ActiveModifiers.Remove(modifier);
+                ActiveModifiers.RemoveAt(i);
             else
                 modifier.Update();
         }
     }
 
-    public static void Apply(Character target)
+    public static void Apply()
     {
         foreach (var modifier in ActiveModifiers)
-        {
-            if (modifier.Target!.Equals(target))
-                modifier.Apply();
-        }
+            modifier.Apply();
     }
 }
