@@ -10,5 +10,7 @@ public interface IModifier
     int VelocityModifier {  get; }
     int CooldownModifier {  get; }
 
+    void SetTarget(Character target);
     void Apply();
+    void Update();
 }

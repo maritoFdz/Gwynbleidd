@@ -15,6 +15,8 @@ public static class ModifiersManagment
         {
             if (modifier.RemainingTurns == 0)
                 ActiveModifiers.Remove(modifier);
+            else
+                modifier.Update();
         }
     }
 

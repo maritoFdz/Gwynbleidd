@@ -25,6 +25,33 @@ public static class MovementHelper
         CurrentCharacterDistances = new int[Maze.GetLength(), Maze.GetLength()];
     }
 
+    public static (int x, int y) GetDirection(ConsoleKeyInfo input)
+    {
+        string? direction = null;
+        (int dirX, int dirY) = (0, 0);
+        // Sends a direction to ChangePosition() method if the key is valid for movement
+        switch (input.Key)
+        {
+            case ConsoleKey.UpArrow:
+                direction = "N";
+                break;
+            case ConsoleKey.RightArrow:
+                direction = "E";
+                break;
+            case ConsoleKey.LeftArrow:
+                direction = "W";
+                break;
+            case ConsoleKey.DownArrow:
+                direction = "S";
+                break;
+        }
+        if (!string.IsNullOrEmpty(direction))
+            (dirX, dirY) = Direction[direction];
+
+        // If the player selected a direction via keyboard
+        return (dirX, dirY);
+    }
+
     public static void ActualizeDistances((int row, int col)Position, int velocity)
     {
         int mazeDim = Maze!.GetLength();
@@ -77,31 +104,18 @@ public static class MovementHelper
         }
     }
 
-    public static (int x, int y) GetDirection(ConsoleKeyInfo input)
+    public static bool GrabbedItem()
     {
-        string? direction = null;
-        (int dirX, int dirY) = (0, 0);
-        // Sends a direction to ChangePosition() method if the key is valid for movement
-        switch (input.Key)
-        {
-            case ConsoleKey.UpArrow:
-                direction = "N";
-                break;
-            case ConsoleKey.RightArrow:
-                direction = "E";
-                break;
-            case ConsoleKey.LeftArrow:
-                direction = "W";
-                break;
-            case ConsoleKey.DownArrow:
-                direction = "S";
-                break;
-        }
-        if (!string.IsNullOrEmpty(direction))
-            (dirX, dirY) = Direction[direction];
-
-        // If the player selected a direction via keyboard
-        return (dirX, dirY);
+        foreach (BoardSquare square in Maze!.Cells)
+            if (square.CharacterOnTop != null && square.PotionOnTop != null) // if an square is shared by a character and a potion
+            {
+                // Potion's target will be the player on top, then added to the Active Modifiers lists and erased from the Maze 
+                square.PotionOnTop.SetTarget(square.CharacterOnTop);
+                ModifiersManagment.Add(square.PotionOnTop);
+                square.PotionOnTop = null;
+                return true;
+            }
+        return false;
     }
 
     public static bool InMazeBounds(int x, int y)

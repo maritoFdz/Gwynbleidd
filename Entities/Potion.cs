@@ -19,9 +19,15 @@ public class Potion(string name, int amountOfTurns, int vMod, int cMod) : IModif
     public void PlaceInMap((int x, int y) destination)
         => Position = destination;
 
+    public void SetTarget(Character? target)
+        => this.Target = target;
+
     public void Apply() // Change character atributes
     {
         Target!.ModifyCooldown(CooldownModifier);
         Target!.ModifyVelocity(VelocityModifier);
     }
+
+    public void Update()
+        => RemainingTurns--;
 }
