@@ -1,7 +1,7 @@
 ﻿using Gwynbleidd.Entities;
+using Gwynbleidd.Entities.Maze_Entitites;
+using Gwynbleidd.Entities.Playable;
 using Gwynbleidd.Maze;
-using Spectre.Console;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Gwynbleidd.GameProcess.GameLogic;
 
@@ -52,19 +52,25 @@ public static class MovementHelper
         return (dirX, dirY);
     }
 
-    public static void ActualizeDistances((int row, int col)Position, int velocity)
+    public static void ActualizeDistances((int row, int col) Position, int velocity)
     {
         int mazeDim = Maze!.GetLength();
         bool[,] visited = new bool[mazeDim, mazeDim];
-        Queue<(int x, int y)> queue = new();
-
         // Initializes all squares as unreachable for the character
         for (int i = 0; i < mazeDim; i++)
             for (int j = 0; j < mazeDim; j++)
                 CurrentCharacterDistances![i, j] = -1;
 
+        // calls recursive function
+        ActualizeDistances(Position, velocity, visited);
+    }
+
+    // Uses recursive calls for portals distances
+    private static void ActualizeDistances((int row, int col)Position, int velocity, bool[,] visited)
+    {
         // Starts the BFS traversal
         CurrentCharacterDistances![Position.row, Position.col] = 0;
+        Queue<(int x, int y)> queue = new(); // for storing nodes
         queue.Enqueue(Position);
         while (queue.Count > 0)
         {
@@ -82,12 +88,16 @@ public static class MovementHelper
                 // If the square is inside the Maze bounds,   
                 if (InMazeBounds(neighborX, neighborY) 
                     && !visited[neighborX, neighborY] // hasn't been visited,
-                    && !Maze[neighborX, neighborY].IsObstacle // there are no obstacles on it,
+                    && !Maze![neighborX, neighborY].IsObstacle // there are no obstacles on it,
                     && Maze[neighborX, neighborY].CharacterOnTop == null) // and there is no other character on top,
                 {
                     CurrentCharacterDistances[neighborX, neighborY] = CurrentCharacterDistances[cX, cY] + 1; // actualize the distance
                     visited[neighborX, neighborY] = true;
                     queue.Enqueue((neighborX, neighborY));
+
+                        // if it reaches a portal, calculate posible movements from the portal
+                    if (Maze[neighborX, neighborY].Content is Portal portal)
+                        ActualizeDistances(portal.Exit!.Position, velocity - CurrentCharacterDistances[neighborX, neighborY], visited);
                 }
             }
         }
@@ -96,27 +106,48 @@ public static class MovementHelper
     public static void ChangePosition(Character character, (int x, int y) direction)
     {
         (int nextX, int nextY) = (character.Position.X + direction.x, character.Position.Y + direction.y);
+
         if (InMazeBounds(nextX, nextY) && CurrentCharacterDistances![nextX, nextY] != -1)
         {
-            Maze![character.Position.X, character.Position.Y].CharacterOnTop = null;
+            Maze![character.Position.X, character.Position.Y].SetCharacter(null);
             character.PlaceInMap((nextX, nextY));
-            Maze![nextX, nextY].CharacterOnTop = character;
+            Maze![nextX, nextY].SetCharacter(character);
         }
     }
 
-    public static bool GrabbedItem()
+    public static bool GrabbedPotion()
     {
         foreach (BoardSquare square in Maze!.Cells)
-            if (square.CharacterOnTop != null && square.PotionOnTop != null) // if an square is shared by a character and a potion
+        {
+            // Check if square has both a chracter (those are the ones that are afected by modifiers) and a potion
+            if (square.CharacterOnTop is Character character && square.Content is Potion potion)
             {
-                // Potion's target will be the player on top, then added to the Active Modifiers lists and erased from the Maze 
-                square.PotionOnTop.SetTarget(square.CharacterOnTop);
-                ModifiersManagment.Add(square.PotionOnTop);
-                square.PotionOnTop = null;
+                // Apply potion to character and adds to active modifiers
+                potion.SetTarget(character);
+                ModifiersManagment.Add(potion);
+                // Erases potion from board
+                square.SetContent(null);
+
                 return true;
             }
+        }
         return false;
     }
+
+    public static bool SteppedOnPortal((int x, int y) position)
+    {
+        if (Maze![position.x, position.y].Content is Portal portal // if there exist a portal
+            && Maze[portal.Exit!.Position.X, portal.Exit.Position.Y].CharacterOnTop == null) // if there is no player on the portal's exit
+        {
+            var character = Maze[position.x, position.y].CharacterOnTop as IPlayable;
+            character!.PlaceInMap(portal.Exit!.Position); // teleports the character
+            Maze![position.x, position.y].SetCharacter(null); // erases the character from the maze
+            Maze[portal.Exit!.Position.X, portal.Exit.Position.Y].SetCharacter(character);
+            return true;
+        }
+        return false;
+    }
+
 
     public static bool InMazeBounds(int x, int y)
     => x >= 0 && x < Maze!.GetLength() && y >= 0 && y < Maze.GetLength();

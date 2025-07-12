@@ -15,13 +15,7 @@ public class Board
         {
             for (int j = 0; j < Cells.GetLength(0); j++)
             {
-                Cells[i, j] = new BoardSquare
-                {
-                    CharacterOnTop = null,
-                    IsFrozen = false,
-                    IsObstacle = false,
-                    PotionOnTop = null
-                };
+                Cells[i, j] = new BoardSquare();
             }
         }
     }
@@ -41,7 +35,8 @@ public class Board
         {
             var rowContent = new List<string>(Cells.GetLength(1));
             for (int col = 0; col < Cells.GetLength(1); col++)
-                rowContent.Add(Cells[row, col].CharacterOnTop != null ? "+" : Cells[row, col].PotionOnTop != null ? "P" : ".");
+                rowContent.Add(Cells[row, col].CharacterOnTop != null ? Cells[row, col].CharacterOnTop!.Appareance
+                    : (Cells[row, col].Content != null) ? Cells[row, col].Content!.Appareance : ".");
             grid.AddRow(rowContent.ToArray());
         }
         AnsiConsole.Write(grid);

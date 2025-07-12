@@ -1,4 +1,6 @@
-﻿namespace Gwynbleidd.Entities;
+﻿using Gwynbleidd.Entities.Playable;
+
+namespace Gwynbleidd.Entities;
 
 public class Player(string name, Character[] members)
 {

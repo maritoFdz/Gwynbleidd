@@ -1,8 +1,8 @@
 ﻿namespace Gwynbleidd;
 
 using Gwynbleidd.Entities;
-using Gwynbleidd.Entities.WildHunters;
-using Gwynbleidd.Entities.Witchers;
+using Gwynbleidd.Entities.Playable.WildHunters;
+using Gwynbleidd.Entities.Playable.Witchers;
 using Gwynbleidd.GameProcess;
 using Gwynbleidd.GameProcess.Menus;
 using Spectre.Console;
