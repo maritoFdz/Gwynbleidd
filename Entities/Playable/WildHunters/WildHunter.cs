@@ -1,12 +1,14 @@
-﻿using Gwynbleidd.GameProcess;
+﻿using Gwynbleidd.Entities.Playable;
+using Gwynbleidd.GameProcess;
 using Gwynbleidd.GameProcess.GameLogic;
 using Spectre.Console;
 
-namespace Gwynbleidd.Entities.Witchers;
-
-public abstract class Witcher(string name, string description, char appareance, int velocity, int skillCooldown)
+namespace Gwynbleidd.Entities.Playable.WildHunters;
+public abstract class WildHunter(string name, string description, char appareance, int velocity, int skillCooldown)
     : Character(name, description, appareance, velocity, skillCooldown)
 {
+
+    // TODO freeze path
     public override bool Move() // returns true if there was movement an false if it wasn't
     {
         (int x, int y) originalPos = Position;
@@ -23,8 +25,8 @@ public abstract class Witcher(string name, string description, char appareance, 
         } while (input.Key != ConsoleKey.Enter && !MovementHelper.GrabbedPotion()); // Stop moving when pressing enter or getting an item
         AnsiConsole.Clear();
         // Checks if there was actual movement
-        return (originalPos == Position);
+        return originalPos == Position;
     }
 
-    public override abstract void UseSkill();
+    public abstract override void UseSkill();
 }

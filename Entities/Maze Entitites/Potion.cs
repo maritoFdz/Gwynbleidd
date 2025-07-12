@@ -1,4 +1,5 @@
-﻿using Gwynbleidd.GameProcess.GameLogic;
+﻿using Gwynbleidd.Entities.Playable;
+using Gwynbleidd.GameProcess.GameLogic;
 
 namespace Gwynbleidd.Entities;
 

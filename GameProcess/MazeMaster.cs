@@ -1,4 +1,5 @@
 ﻿using Gwynbleidd.Entities;
+using Gwynbleidd.Entities.Playable;
 using Gwynbleidd.GameProcess.GameLogic;
 using Gwynbleidd.Maze;
 using Spectre.Console;

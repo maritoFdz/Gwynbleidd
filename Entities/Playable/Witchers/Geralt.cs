@@ -1,4 +1,4 @@
-﻿namespace Gwynbleidd.Entities.Witchers;
+﻿namespace Gwynbleidd.Entities.Playable.Witchers;
 
 public class Geralt : Witcher
 {

@@ -3,7 +3,7 @@ using Gwynbleidd.GameProcess.GameLogic;
 using Spectre.Console;
 using System.Globalization;
 
-namespace Gwynbleidd.Entities;
+namespace Gwynbleidd.Entities.Playable;
 
 public abstract class Character(
     string name,
@@ -27,7 +27,7 @@ public abstract class Character(
     public abstract void UseSkill();
 
     public void ModifyStats(int vMod, int cMod) // for convention, a 0 - 0 modifier implies a stats reset
-   => (VelocityModifier, CooldownModifier) = (vMod == 0 & cMod == 0) ? (0, 0) : (VelocityModifier + vMod, CooldownModifier + cMod);
+   => (VelocityModifier, CooldownModifier) = vMod == 0 & cMod == 0 ? (0, 0) : (VelocityModifier + vMod, CooldownModifier + cMod);
 
     public void PlaceInMap((int x, int y) destination)
         => Position = destination;

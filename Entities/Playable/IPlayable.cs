@@ -1,4 +1,4 @@
-﻿namespace Gwynbleidd.Entities;
+﻿namespace Gwynbleidd.Entities.Playable;
 public interface IPlayable : IEntity
 {
     public string Description { get; }

@@ -1,4 +1,4 @@
-﻿namespace Gwynbleidd.Entities.WildHunters;
+﻿namespace Gwynbleidd.Entities.Playable.WildHunters;
 
 public class Eredin : WildHunter
 {

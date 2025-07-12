@@ -1,4 +1,6 @@
 ﻿using Gwynbleidd.Entities;
+using Gwynbleidd.Entities.Maze_Entitites;
+using Gwynbleidd.Entities.Playable;
 using Gwynbleidd.Maze;
 using System;
 using System.Text;
@@ -13,6 +15,7 @@ public static class MazeGenerator
         Board maze = new(MazeDimension);
         PlaceCharacters(p1, p2, maze);
         PlaceItems(maze);
+        PlacePortals(maze);
         return maze;
     }
 
@@ -39,6 +42,25 @@ public static class MazeGenerator
         {
             var potion = PotionGenerator.Generate();
             PlaceRandom(potion, maze);
+        }
+    }
+
+    // Two pairs of portals for now
+    public static void PlacePortals(Board maze)
+    {
+        const int amount = 2;
+
+        for (int i = 0; i < amount; i++)
+        {
+            // Links a pair of portals
+            var portal1 = new Portal();
+            var portal2 = new Portal();
+            portal2.SetExit(portal1);
+            portal1.SetExit(portal2);
+
+            // Places them in map
+            PlaceRandom(portal1, maze);
+            PlaceRandom(portal2, maze);
         }
     }
 

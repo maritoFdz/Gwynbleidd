@@ -1,4 +1,5 @@
 ﻿using Gwynbleidd.Entities;
+using Gwynbleidd.Entities.Playable;
 
 namespace Gwynbleidd.Maze;
 
