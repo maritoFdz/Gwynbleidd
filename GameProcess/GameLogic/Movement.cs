@@ -106,6 +106,7 @@ public static class MovementHelper
     public static void ChangePosition(Character character, (int x, int y) direction)
     {
         (int nextX, int nextY) = (character.Position.X + direction.x, character.Position.Y + direction.y);
+
         if (InMazeBounds(nextX, nextY) && CurrentCharacterDistances![nextX, nextY] != -1)
         {
             Maze![character.Position.X, character.Position.Y].SetCharacter(null);
@@ -129,6 +130,20 @@ public static class MovementHelper
 
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static bool SteppedOnPortal((int x, int y) position)
+    {
+        if (Maze![position.x, position.y].Content is Portal portal // if there exist a portal
+            && Maze[portal.Exit!.Position.X, portal.Exit.Position.Y].CharacterOnTop == null) // if there is no player on the portal's exit
+        {
+            var character = Maze[position.x, position.y].CharacterOnTop as IPlayable;
+            character!.PlaceInMap(portal.Exit!.Position); // teleports the character
+            Maze![position.x, position.y].SetCharacter(null); // erases the character from the maze
+            Maze[portal.Exit!.Position.X, portal.Exit.Position.Y].SetCharacter(character);
+            return true;
         }
         return false;
     }

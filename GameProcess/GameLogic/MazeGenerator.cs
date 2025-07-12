@@ -69,13 +69,16 @@ public static class MazeGenerator
         int x = Random.Shared.Next(maze.GetLength());
         int y = Random.Shared.Next(maze.GetLength());
 
-        if (entity is IPlayable playable)
+        if (maze[x, y].CharacterOnTop == null && maze[x, y].CharacterOnTop == null)
         {
-            playable.PlaceInMap((x, y));
-            maze[x, y].SetCharacter(playable);
-        }
-        else
-        {
+            if (entity is IPlayable playable)
+            {
+                playable.PlaceInMap((x, y));
+                maze[x, y].SetCharacter(playable);
+                return;
+            }
+            else if (entity is Portal portal)
+                portal.PlaceInMap((x, y));
             maze[x, y].SetContent(entity);
         }
     }

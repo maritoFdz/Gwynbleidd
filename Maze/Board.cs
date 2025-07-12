@@ -35,7 +35,8 @@ public class Board
         {
             var rowContent = new List<string>(Cells.GetLength(1));
             for (int col = 0; col < Cells.GetLength(1); col++)
-                rowContent.Add(Cells[row, col].CharacterOnTop != null ? "+" : Cells[row, col].Content != null ? "P" : ".");
+                rowContent.Add(Cells[row, col].CharacterOnTop != null ? Cells[row, col].CharacterOnTop!.Appareance
+                    : (Cells[row, col].Content != null) ? Cells[row, col].Content!.Appareance : ".");
             grid.AddRow(rowContent.ToArray());
         }
         AnsiConsole.Write(grid);

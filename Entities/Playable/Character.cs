@@ -8,7 +8,7 @@ namespace Gwynbleidd.Entities.Playable;
 public abstract class Character(
     string name,
     string description,
-    char appareance,
+    string appareance,
     int velocity,
     int skillCooldown) : IPlayable
 {
@@ -16,7 +16,7 @@ public abstract class Character(
     public string Description { get; protected set; } = description;
     public int Velocity { get; protected set; } = velocity;
     public int Cooldown { get; protected set; } = skillCooldown;
-    public char Appareance { get; protected set; } = appareance;
+    public string Appareance { get; protected set; } = appareance;
     public (int X, int Y) Position { get; protected set; }
     public int VelocityModifier { get; protected set; }
     public int CooldownModifier { get; protected set; }

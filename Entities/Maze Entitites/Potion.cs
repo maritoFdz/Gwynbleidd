@@ -13,7 +13,7 @@ public class Potion(string name, int amountOfTurns, int vMod, int cMod) : IModif
     public Character? Target { get; private set; } = null;
     public int VelocityModifier { get; private set; } = vMod;
     public int CooldownModifier { get; private set; } = cMod;
-    public char Appareance { get; private set; } = 'P';
+    public String Appareance { get; private set; } = "P";
 
     public void SetTarget(Character? target)
         => this.Target = target;

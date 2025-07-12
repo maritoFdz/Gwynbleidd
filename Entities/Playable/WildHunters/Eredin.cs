@@ -4,7 +4,7 @@ public class Eredin : WildHunter
 {
     private const string name = "Eredin";
     private const string description = "A high ranking general in his world until he killed the king and became his successor.";
-    private const char appareance = '*';
+    private const string appareance = "*";
     private const int velocity = 2;
     private const int skillCooldown = 3;
 
